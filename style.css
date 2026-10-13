@@ -96,6 +96,22 @@ body {
 #music-pill.playing .disc-icon { animation: spin 3.2s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ================= player YouTube (audio latar) =================
+   Kotak 1px di pojok — sengaja tetap di dalam viewport supaya player
+   YouTube di HP tidak dijeda browser saat layar menyala. */
+#yt-player {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0.02;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+#yt-player iframe { width: 1px; height: 1px; border: 0; }
+
 /* ================= progress ================= */
 #progress-bar-wrap {
   position: fixed;

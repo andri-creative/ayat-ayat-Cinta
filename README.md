@@ -11,7 +11,7 @@ Berisi **14 babak** mini-game, SVG Arab buatan sendiri, GIF transparan, musik la
 
 - **14 babak interaktif** — ketuk, geser, gosok, tahan tombol, susun cincin.
 - **Visual**: langit malam Kairo, glassmorphism pearl–gold, konfeti kanvas, hujan partikel ambient, kaligrafi Arab animatif.
-- **Audio**: musik latar (URL Archive.org → file lokal → synth Web Audio) + SFX chime/bell/shimmer/akad — semua bisa dimatikan dari pill musik.
+- **Audio**: musik latar **"Ayat-Ayat Cinta" (Rossa, cover I CONCERT)** via YouTube IFrame Player API, dengan cadangan MP3 lokal → synth Web Audio + SFX chime/bell/shimmer/akad — semua bisa dimatikan dari pill musik.
 - **Progres tersimpan** (`localStorage`) — bisa dilanjut, bisa di-reset dari finale.
 - **Aksesibilitas**: touch target ≥48px, `prefers-reduced-motion`, safe-area, `aria-label` per babak.
 
@@ -88,11 +88,27 @@ Font: *Aref Ruqaa* (judul), *Amiri* (Arab), *Caveat* (tangan), *Plus Jakarta San
 
 ## 🔊 Audio
 
-Fallback berurutan saat diputar pertama kali:
+Musik utama: **"Ayat-Ayat Cinta — Rossa | Cover | I CONCERT"**
+(<https://youtu.be/7KPMSPbYFA0>) diputar lewat **YouTube IFrame Player API**
+dari container tersembunyi `#yt-player` (1px, di dalam viewport) — audio
+di-stream resmi, tidak ada file video/audio yang diunduh.
+
+Rantai cadangan bila YouTube tidak bisa diputar (offline, embed diblokir,
+autoplay ditolak):
 
 1. `https://archive.org/download/arabic-instrumental-song/Dubai%20Dream%20Arabic.mp3` (CORS OK)
 2. `assets/dubai_dream_arabic.mp3`
 3. Synth Web Audio bertema maqam (ringan, offline-friendly)
+
+Konfigurasi ada di `script.js` bagian `MUSIC_YT`:
+
+```js
+const MUSIC_YT = {
+  videoId: '7KPMSPbYFA0',
+  start: 0,      // detik awal — ganti untuk mulai dari momen lain
+  volume: 55     // 0–100
+};
+```
 
 SFX (`sfxChime`, `sfxBell`, `sfxShimmer`, `sfxGate`, dll.) semuanya di-generate Web Audio — tanpa file suara.
 

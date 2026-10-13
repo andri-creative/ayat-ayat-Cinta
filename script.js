@@ -11,9 +11,21 @@ const isHttp = location.protocol.startsWith('http');
 const SCENE_KEY = 'ayat-ayat-cinta-scene';
 const MUTED_KEY = 'ayat-ayat-cinta-muted';
 
+/* Musik utama: "Ayat-Ayat Cinta - Rossa | Cover | I CONCERT" (YouTube).
+   Diputar lewat IFrame Player API resmi — tidak ada file yang diunduh. */
+const MUSIC_YT = {
+  videoId: '7KPMSPbYFA0',
+  title: 'Ayat-Ayat Cinta — Rossa (Cover)',
+  start: 0,          // detik awal; ganti untuk mulai dari momen lain
+  volume: 55         // 0–100
+};
+
+/* Rantai cadangan bila YouTube tidak bisa diputar */
 const MUSIC_SOURCES = [
-  'https://archive.org/download/arabic-instrumental-song/Dubai%20Dream%20Arabic.mp3',
-  'assets/dubai_dream_arabic.mp3'
+  { type: 'yt' },
+  { type: 'mp3', src: 'https://archive.org/download/arabic-instrumental-song/Dubai%20Dream%20Arabic.mp3' },
+  { type: 'mp3', src: 'assets/dubai_dream_arabic.mp3' },
+  { type: 'synth' }
 ];
 
 const TOTAL = 14;
@@ -104,12 +116,20 @@ const A = {
   master: null,
   audio: null,
   srcIdx: 0,
+  attempt: 0,       // penanda percobaan putar (cegah advance ganda)
+  mp3Attempt: null,
   playing: false,
-  mode: 'none',     // 'mp3' | 'synth'
-  triedAll: false,
+  mode: 'none',     // 'yt' | 'mp3' | 'synth'
+  wantPlay: false,
   schedTimer: null,
   step: 0,
-  nextTime: 0
+  nextTime: 0,
+  yt: null,
+  ytReady: false,
+  ytFailed: false,
+  ytLoading: false,
+  ytTimer: null,
+  ytCheck: null
 };
 
 function ensureAudio() {
@@ -126,35 +146,162 @@ function resumeCtx() {
   if (A.ctx && A.ctx.state === 'suspended') A.ctx.resume();
 }
 
-/* --- MP3 chain: external URL -> local file -> synth --- */
-function startMp3() {
+function currentTrack() {
+  return MUSIC_SOURCES[A.srcIdx] || null;
+}
+
+/* --- rantai musik: YouTube -> MP3 eksternal -> MP3 lokal -> synth --- */
+function startTrack() {
+  A.attempt++;
+  const track = currentTrack();
+  if (!track || track.type === 'synth') { startSynth(); return; }
+  if (track.type === 'yt') { startYouTube(A.attempt); return; }
+  startMp3(track.src, A.attempt);
+}
+
+function failTrack(attempt) {
+  if (attempt !== A.attempt) return;   // sudah ditangani / percobaan lama
+  A.srcIdx++;
+  startTrack();
+}
+
+function startMp3(src, attempt) {
   A.audio = A.audio || $('bg-audio');
-  if (A.srcIdx >= MUSIC_SOURCES.length) { startSynth(); return; }
-  const src = MUSIC_SOURCES[A.srcIdx];
+  A.mp3Attempt = attempt;
   A.audio.src = src;
-  A.audio.volume = 0.55;
+  A.audio.volume = MUSIC_YT.volume / 100;
   const p = A.audio.play();
   if (p && p.then) {
-    p.then(() => { A.playing = true; A.mode = 'mp3'; updateMusicUI(true); })
-      .catch((err) => {
-        if (err && (err.name === 'NotAllowedError' || err.name === 'AbortError')) return;
-        advanceMp3();
-      });
+    p.then(() => {
+      if (attempt !== A.attempt) return;
+      A.playing = true;
+      A.mode = 'mp3';
+      $('music-pill').title = src;
+      updateMusicUI(true);
+    }).catch((err) => {
+      if (err && err.name === 'NotAllowedError') return;
+      failTrack(attempt);
+    });
   }
-}
-A.audioErrorHandler = null;
-function advanceMp3() {
-  A.srcIdx++;
-  if (A.srcIdx < MUSIC_SOURCES.length) startMp3();
-  else { A.triedAll = true; startSynth(); }
 }
 
 function hookAudioErrors() {
-  const el = $('bg-audio');
-  el.addEventListener('error', () => {
-    if (A.mode !== 'synth' && !STATE.musicMuted) advanceMp3();
+  $('bg-audio').addEventListener('error', () => {
+    if (A.mode === 'synth' || STATE.musicMuted || A.mp3Attempt == null) return;
+    failTrack(A.mp3Attempt);
   });
 }
+
+/* --- YouTube: "Ayat-Ayat Cinta" via IFrame Player API --- */
+function startYouTube(attempt) {
+  A.wantPlay = true;
+  if (A.ytFailed) { failTrack(attempt); return; }
+  if (A.ytReady) { playYouTube(); return; }
+  loadYouTubeApi(attempt);
+  clearTimeout(A.ytTimer);
+  A.ytTimer = setTimeout(() => {
+    if (A.ytReady || attempt !== A.attempt) return;
+    A.ytFailed = true;
+    failTrack(attempt);
+  }, 7000);
+}
+
+function loadYouTubeApi(attempt) {
+  if (A.ytReady || A.ytFailed || A.ytLoading) return;
+  if (window.YT && window.YT.Player) { mountYouTube(); return; }
+  A.ytLoading = true;
+  const s = document.createElement('script');
+  s.src = 'https://www.youtube.com/iframe_api';
+  s.async = true;
+  s.onerror = () => {
+    A.ytLoading = false;
+    A.ytFailed = true;
+    failTrack(attempt);
+  };
+  document.head.appendChild(s);
+}
+
+function mountYouTube() {
+  if (A.yt || A.ytFailed || !window.YT || !window.YT.Player) return;
+  try {
+    A.yt = new window.YT.Player('yt-player', {
+      videoId: MUSIC_YT.videoId,
+      playerVars: {
+        autoplay: 0, controls: 0, playsinline: 1, fs: 0, rel: 0,
+        modestbranding: 1, disablekb: 1,
+        loop: 1, playlist: MUSIC_YT.videoId,
+        start: MUSIC_YT.start
+      },
+      events: {
+        onReady: (e) => {
+          A.ytReady = true;
+          clearTimeout(A.ytTimer);
+          try { e.target.setVolume(MUSIC_YT.volume); } catch (err) {}
+          const cur = currentTrack();
+          if (A.wantPlay && !STATE.musicMuted && cur && cur.type === 'yt') playYouTube();
+        },
+        onStateChange: (e) => {
+          if (e.data === 1) {                 // PLAYING
+            clearTimeout(A.ytCheck);
+            A.mode = 'yt';
+            A.playing = true;
+            $('music-pill').title = MUSIC_YT.title;
+            updateMusicUI(true);
+          } else if (e.data === 0) {          // ENDED
+            try { e.target.playVideo(); } catch (err) {}
+          }
+        },
+        onError: () => {
+          if (A.ytFailed) return;
+          A.ytFailed = true;
+          clearTimeout(A.ytTimer);
+          if (A.mode === 'yt') { A.mode = 'none'; A.playing = false; }
+          const cur = currentTrack();
+          if (cur && cur.type === 'yt') failTrack(A.attempt);
+          else updateMusicUI(false);
+        }
+      }
+    });
+  } catch (err) {
+    A.ytFailed = true;
+    clearTimeout(A.ytTimer);
+    failTrack(A.attempt);
+  }
+}
+
+function playYouTube() {
+  if (!A.yt || !A.ytReady) return;
+  try { A.yt.playVideo(); } catch (err) {}
+  A.mode = 'yt';
+  A.playing = true;
+  $('music-pill').title = MUSIC_YT.title;
+  updateMusicUI(true);
+  verifyYouTube(A.attempt);
+}
+
+/* Browser bisa menolak playVideo() di luar gestur pengguna — kalau dalam
+   beberapa detik tidak benar-benar PLAYING, coba sekali lalu jatuh ke MP3. */
+function verifyYouTube(attempt) {
+  clearTimeout(A.ytCheck);
+  const state = () => { try { return A.yt ? A.yt.getPlayerState() : -1; } catch (e) { return -1; } };
+  const alive = () => state() === 1 || state() === 3;
+  A.ytCheck = setTimeout(() => {
+    if (!A.wantPlay || attempt !== A.attempt || A.ytFailed || A.mode !== 'yt' || alive()) return;
+    try { A.yt.playVideo(); } catch (e) {}
+    setTimeout(() => {
+      if (!A.wantPlay || attempt !== A.attempt || A.ytFailed || A.mode !== 'yt' || alive()) return;
+      A.mode = 'none';
+      A.playing = false;
+      updateMusicUI(false);
+      failTrack(attempt);
+    }, 2500);
+  }, 3000);
+}
+
+window.onYouTubeIframeAPIReady = function () {
+  A.ytLoading = false;
+  mountYouTube();
+};
 
 /* --- synth fallback: maqam-ish oud + pad --- */
 const SYNTH_SCALE = [220.0, 233.08, 261.63, 293.66, 311.13, 349.23, 392.0, 415.3];
@@ -195,6 +342,9 @@ function stopSynth() {
 }
 function stopMusic() {
   A.playing = false;
+  A.wantPlay = false;
+  clearTimeout(A.ytCheck);
+  if (A.mode === 'yt' && A.yt) { try { A.yt.pauseVideo(); } catch (e) {} }
   if (A.mode === 'mp3' && A.audio) { A.audio.pause(); }
   if (A.mode === 'synth') stopSynth();
   updateMusicUI(false);
@@ -203,8 +353,10 @@ function startMusic() {
   if (STATE.musicMuted || A.playing) return;
   ensureAudio();
   resumeCtx();
+  A.wantPlay = true;
   if (A.mode === 'synth') { startSynth(); return; }
-  startMp3();
+  if (A.mode === 'yt' && A.ytReady) { playYouTube(); return; }
+  startTrack();
 }
 function toggleMusic() {
   ensureAudio(); resumeCtx();
