@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a1128" />
+  <title>Ayat-ayat Cinta 🕌</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕌</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&family=Reem+Kufi:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
+
+  <button id="music-pill" type="button" aria-label="Nyalakan atau matikan musik">
+    <span class="disc-icon">♪</span><span id="music-label">Musik</span>
+  </button>
+
+  <div id="progress-bar-wrap">
+    <div class="step-dots" id="step-dots"></div>
+    <span class="step-label" id="step-label">1/14</span>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <main id="stage">
+
+    <!-- ============ BABAK 1 : BISMILLAH & GERBANG MASJID ============ -->
+    <section class="scene active" id="scene-1" aria-label="Babak 1 Bismillah dan Gerbang Masjid">
+      <div class="scene-emoji">🕌</div>
+      <p class="arabic-line" dir="rtl" lang="ar">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+      <h1 class="scene-title">Ayat-ayat Cinta</h1>
+      <p class="scene-sub">Ketuk gerbang masjid 3 kali untuk membuka kisah ini 🌙</p>
+
+      <div class="toy" id="gate-toy">
+        <svg viewBox="0 0 260 210" class="gate-svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="goldG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f0c75e"/><stop offset="1" stop-color="#b8860b"/>
+            </linearGradient>
+            <radialGradient id="glowIn" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="#ffe9a8" stop-opacity=".95"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect x="20" y="70" width="220" height="140" rx="10" fill="#0d3b2e" stroke="url(#goldG)" stroke-width="3"/>
+          <path d="M130 14 C 70 14 44 58 44 96 L 216 96 C 216 58 190 14 130 14 Z" fill="#0d3b2e" stroke="url(#goldG)" stroke-width="3"/>
+          <circle cx="130" cy="44" r="9" fill="url(#goldG)"/>
+          <path d="M130 24 l4 9 10 1 -7.5 7 2 10 -8.5 -5 -8.5 5 2 -10 -7.5 -7 10 -1 z" fill="#f0c75e"/>
+          <path d="M66 210 V150 a64 54 0 0 1 128 0 V210 Z" fill="#060b1d" stroke="url(#goldG)" stroke-width="3"/>
+          <path id="gate-l" class="gate-door door-left" d="M66 210 V150 a64 54 0 0 1 64 -54 V210 Z" fill="#123a2c" stroke="url(#goldG)" stroke-width="2.5"/>
+          <path id="gate-r" class="gate-door door-right" d="M130 96 a64 54 0 0 1 64 54 V210 H130 Z" fill="#123a2c" stroke="url(#goldG)" stroke-width="2.5"/>
+          <circle cx="122" cy="152" r="4.5" fill="#f0c75e"/>
+          <circle cx="138" cy="152" r="4.5" fill="#f0c75e"/>
+          <ellipse cx="130" cy="150" rx="70" ry="55" fill="url(#glowIn)" id="gate-glow" opacity="0"/>
+        </svg>
+        <img src="assets/gif-bismillah-glow.gif" alt="Kaligrafi Bismillah beranimasi" class="sticker-gif hidden" id="gif-s1" />
+      </div>
+
+      <div class="whisper"><p>“Setiap kisah indah dimulai dengan nama-Nya. Semoga cinta ini juga dimulai dengan doa — bukan sekadar nafsu.”</p></div>
+      <p class="status" id="st-1">Gerbang 0/3</p>
+      <button class="btn-main hidden" id="btn-1-next" type="button">Masuk →</button>
+    </section>
+
+    <!-- ============ BABAK 2 : MAHASISWA DI AL-AZHAR ============ -->
+    <section class="scene" id="scene-2" aria-label="Babak 2 Mahasiswa di Al-Azhar">
+      <div class="scene-emoji">📚</div>
+      <p class="arabic-line" dir="rtl" lang="ar">ٱلْعِلْمُ فِي ٱلسَّمَاءِ</p>
+      <h2 class="scene-title">Al-Azhar, Kairo</h2>
+      <p class="scene-sub">Ketuk 5 bintang ilmu yang melayang di langit perpustakaan ✨</p>
+
+      <div class="toy stars-toy" id="stars-toy">
+        <svg viewBox="0 0 260 170" class="lib-svg" aria-hidden="true">
+          <rect x="10" y="120" width="240" height="44" rx="8" fill="#12233f" stroke="#d4af37" stroke-width="2"/>
+          <rect x="24" y="98" width="34" height="24" rx="3" fill="#e0526a"/>
+          <rect x="62" y="98" width="28" height="24" rx="3" fill="#d4af37"/>
+          <rect x="94" y="98" width="40" height="24" rx="3" fill="#14532d"/>
+          <rect x="138" y="98" width="30" height="24" rx="3" fill="#7dd3fc"/>
+          <rect x="172" y="98" width="36" height="24" rx="3" fill="#fb7185"/>
+          <rect x="212" y="98" width="26" height="24" rx="3" fill="#f0c75e"/>
+          <path d="M40 120 v-58 M40 62 l-16 -14 M40 62 l16 -14" stroke="#d4af37" stroke-width="2.5" fill="none"/>
+          <circle cx="40" cy="56" r="5" fill="#f0c75e"/>
+        </svg>
+        <button class="star-btn" style="left:12%;top:16%" data-star="1" aria-label="Bintang 1">★</button>
+        <button class="star-btn" style="left:38%;top:6%" data-star="2" aria-label="Bintang 2">★</button>
+        <button class="star-btn" style="left:64%;top:20%" data-star="3" aria-label="Bintang 3">★</button>
+        <button class="star-btn" style="left:82%;top:8%" data-star="4" aria-label="Bintang 4">★</button>
+        <button class="star-btn" style="left:52%;top:34%" data-star="5" aria-label="Bintang 5">★</button>
+      </div>
+
+      <div class="whisper"><p>“Di antara jutaan buku di Al-Azhar, halaman yang paling ingin aku selesaikan adalah bab kehidupan bersamamu, habibi.”</p></div>
+      <p class="status" id="st-2">Bintang 0/5</p>
+      <button class="btn-main hidden" id="btn-2-next" type="button">Lanjut →</button>
+    </section>
+
+    <!-- ============ BABAK 3 : PERTEMUAN DI KERETA KAIRO ============ -->
+    <section class="scene" id="scene-3" aria-label="Babak 3 Pertemuan di Kereta Kairo">
+      <div class="scene-emoji">🚃</div>
+      <p class="arabic-line" dir="rtl" lang="ar">ٱلْقَدَرُ لِلَّٰهِ</p>
+      <h2 class="scene-title">Kereta Kairo</h2>
+      <p class="scene-sub">Geser rel kereta hingga jendela bertemu jendela 🚃</p>
+
+      <div class="toy" id="train-toy">
+        <svg viewBox="0 0 260 140" class="train-svg" aria-hidden="true">
+          <line x1="10" y1="112" x2="250" y2="112" stroke="#d4af37" stroke-width="3"/>
+          <g stroke="#9aa7bd" stroke-width="2">
+            <line x1="30" y1="118" x2="30" y2="128"/><line x1="80" y1="118" x2="80" y2="128"/>
+            <line x1="130" y1="118" x2="130" y2="128"/><line x1="180" y1="118" x2="180" y2="128"/>
+            <line x1="230" y1="118" x2="230" y2="128"/>
+          </g>
+          <g id="train-car">
+            <rect x="16" y="52" width="118" height="58" rx="10" fill="#12233f" stroke="#d4af37" stroke-width="2.5"/>
+            <rect x="30" y="62" width="30" height="26" rx="4" fill="#7dd3fc" opacity=".85"/>
+            <rect x="68" y="62" width="30" height="26" rx="4" fill="#7dd3fc" opacity=".85"/>
+            <rect x="106" y="62" width="20" height="26" rx="4" fill="#f0c75e" opacity=".8"/>
+            <circle cx="45" cy="112" r="9" fill="#060b1d" stroke="#d4af37" stroke-width="2"/>
+            <circle cx="105" cy="112" r="9" fill="#060b1d" stroke="#d4af37" stroke-width="2"/>
+          </g>
+        </svg>
+        <input type="range" min="0" max="100" value="0" id="train-range" class="range-gold" aria-label="Geser kereta" />
+        <div class="meet-text hidden" id="meet-text-3">
+          <p dir="rtl" lang="ar">أَنْتِ حَبِيبَةِ قَلْبِي</p>
+          <span>Kau yang kutunggu di ujung rel ini 🌹</span>
+        </div>
+      </div>
+
+      <div class="whisper"><p>“Di kereta yang penuh orang asing, satu tatapanmu membuat kota seluas Kairo terasa seperti rumah, roohi.”</p></div>
+      <p class="status" id="st-3">Jarak 0%</p>
+      <button class="btn-main hidden" id="btn-3-next" type="button">Bertemu →</button>
+    </section>
+
+    <!-- ============ BABAK 4 : SURAT & RAHASIA NOURA ============ -->
+    <section class="scene" id="scene-4" aria-label="Babak 4 Surat dan Rahasia Noura">
+      <div class="scene-emoji">💌</div>
+      <p class="arabic-line" dir="rtl" lang="ar">ٱلْكَلِمَٱتُ تَكْتُبُ ٱلْقُلُوب</p>
+      <h2 class="scene-title">Surat Rahasia</h2>
+      <p class="scene-sub">Ketuk segel lilin untuk membuka gulungan surat 🕯️</p>
+
+      <div class="toy" id="letter-toy">
+        <svg viewBox="0 0 260 160" class="scroll-svg" aria-hidden="true">
+          <g id="scroll-roll">
+            <rect x="46" y="40" width="168" height="86" rx="6" fill="#f6efdd" stroke="#c9a227" stroke-width="2.5"/>
+            <line x1="62" y1="60" x2="198" y2="60" stroke="#b8860b" stroke-width="2" opacity=".55"/>
+            <line x1="62" y1="76" x2="198" y2="76" stroke="#b8860b" stroke-width="2" opacity=".45"/>
+            <line x1="62" y1="92" x2="168" y2="92" stroke="#b8860b" stroke-width="2" opacity=".4"/>
+            <line x1="62" y1="108" x2="184" y2="108" stroke="#b8860b" stroke-width="2" opacity=".35"/>
+            <rect x="34" y="30" width="18" height="106" rx="9" fill="#8b5a2b" stroke="#5c3a17" stroke-width="2"/>
+            <rect x="208" y="30" width="18" height="106" rx="9" fill="#8b5a2b" stroke="#5c3a17" stroke-width="2"/>
+          </g>
+          <g id="wax-seal">
+            <circle cx="130" cy="83" r="24" fill="#e0526a" stroke="#a11f38" stroke-width="3"/>
+            <circle cx="130" cy="83" r="16" fill="none" stroke="#ffd7de" stroke-width="2" opacity=".7"/>
+            <path d="M130 73 l3.4 7 7.6 .8 -5.7 5.2 1.6 7.5 -6.9 -3.9 -6.9 3.9 1.6 -7.5 -5.7 -5.2 7.6 -.8 z" fill="#fff0f3"/>
+          </g>
+          <text id="letter-reveal" x="130" y="88" text-anchor="middle" font-family="Amiri, serif" font-size="15" fill="#7a4a12" opacity="0">Aku menulis namamu…</text>
+        </svg>
+        <div class="kalli-text hidden" id="kalli-text-4">
+          <p dir="rtl" lang="ar">أَكْتُبُ اسْمَكِ فِي كُلِّ حَرْف</p>
+          <span>Kutulis namamu di setiap huruf ✒️</span>
+        </div>
+      </div>
+
+      <div class="whisper"><p>“Ada cinta yang lebih baik dititipkan pada selembar kertas — agar ia tak menyakiti siapa pun, termasuk dirinya sendiri.”</p></div>
+      <p class="status" id="st-4">Segel utuh</p>
+      <button class="btn-main hidden" id="btn-4-next" type="button">Lanjut →</button>
+    </section>
+
+    <!-- ============ BABAK 5 : DIARY MARIA ============ -->
+    <section class="scene" id="scene-5" aria-label="Babak 5 Diary Maria Gadis Koptik">
+      <div class="scene-emoji">📖</div>
+      <p class="arabic-line" dir="rtl" lang="ar">ٱلسِّرُّ فِي ٱلدِّيَارِ</p>
+      <h2 class="scene-title">Diary Maria</h2>
+      <p class="scene-sub">Gosok halaman diary untuk mengungkap kalimat rahasia 🖊️</p>
+
+      <div class="toy" id="diary-toy">
+        <div class="diary-page">
+          <p class="diary-text" dir="rtl" lang="ar" id="diary-hidden">يَا فَحْرِي… أَنَا أُحِبُّكَ</p>
+          <p class="diary-trans" id="diary-trans">“Wahai Fahri… aku mencintaimu.” — rahasia yang hanya tersimpan di diary</p>
+          <canvas id="scratch-canvas" aria-label="Gosok untuk membuka"></canvas>
+        </div>
+        <img src="assets/gif-kaligrafi-2-trans.gif" alt="Kaligrafi Arab beranimasi" class="sticker-gif small hidden" id="gif-s5" />
+      </div>
+
+      <div class="whisper"><p>“Aku menulis namamu setiap malam di diary ini — bukan berharap kau membacanya, tapi berharap suatu hari aku berani mengucapkannya.”</p></div>
+      <p class="status" id="st-5">Terkunci 0%</p>
+      <button class="btn-main hidden" id="btn-5-next" type="button">Lanjut →</button>
+    </section>
+
+    <!-- ============ BABAK 6 : MENJAGA HATI NURUL ============ -->
+    <section class="scene" id="scene-6" aria-label="Babak 6 Menjaga Hati Nurul">
+      <div class="scene-emoji">💎</div>
+      <p class="arabic-line" dir="rtl" lang="ar">ٱلْحَقُّ أَفْضَل</p>
+      <h2 class="scene-title">Tiga Permata</h2>
+      <p class="scene-sub">Pilih satu permata kejujuran untuk Nurul 💎</p>
+
+      <div class="toy gems-toy" id="gems-toy">
+        <button class="gem-btn" data-gem="1" aria-label="Permata jujur">
+          <svg viewBox="0 0 60 60" aria-hidden="true"><polygon points="30,6 52,24 30,54 8,24" fill="#38bdf8" stroke="#e0f2fe" stroke-width="2"/><polyline points="8,24 52,24" fill="none" stroke="#e0f2fe" stroke-width="1.5"/><polyline points="30,6 20,24 30,54" fill="none" stroke="#e0f2fe" stroke-width="1.5"/><polyline points="30,6 40,24 30,54" fill="none" stroke="#e0f2fe" stroke-width="1.5"/></svg>
+        </button>
+        <button class="gem-btn" data-gem="2" aria-label="Permata diam">
+          <svg viewBox="0 0 60 60" aria-hidden="true"><polygon points="30,6 52,24 30,54 8,24" fill="#e0526a" stroke="#ffd7de" stroke-width="2"/><polyline points="8,24 52,24" fill="none" stroke="#ffd7de" stroke-width="1.5"/><polyline points="30,6 20,24 30,54" fill="none" stroke="#ffd7de" stroke-width="1.5"/><polyline points="30,6 40,24 30,54" fill="none" stroke="#ffd7de" stroke-width="1.5"/></svg>
+        </button>
+        <button class="gem-btn" data-gem="3" aria-label="Permata mengelak">
+          <svg viewBox="0 0 60 60" aria-hidden="true"><polygon points="30,6 52,24 30,54 8,24" fill="#d4af37" stroke="#fff8ea" stroke-width="2"/><polyline points="8,24 52,24" fill="none" stroke="#fff8ea" stroke-width="1.5"/><polyline points="30,6 20,24 30,54" fill="none" stroke="#fff8ea" stroke-width="1.5"/><polyline points="30,6 40,24 30,54" fill="none" stroke="#fff8ea" stroke-width="1.5"/></svg>
+        </button>
+        <div class="gem-answer hidden" id="gem-answer">
+          <p class="arabic-mini" dir="rtl" lang="ar">ٱلْحَقُّ نُور</p>
+          <p>“Kejujuran itu menyakitkan sesaat, tapi kebohongan menyakitkan selamanya. Aku memilih jujur — walau hati bergetar, habibi.”</p>
+        </div>
+      </div>
+
+      <div class="whisper"><p>“Perempuan sejati tak menuntut jawaban manis. Ia hanya ingin kejujuran yang tak membuatnya menangis diam-diam.”</p></div>
+      <p class="status" id="st-6">Pilih 1 permata</p>
+      <button class="btn-main hidden" id="btn-6-next" type="button">Lanjut →</button>
+    </section>
+
+    <!-- ============ BABAK 7 : LINDUNGI NOURA ============ -->
+    <section class="scene" id="scene-7" aria-label="Babak 7 Lindungi Noura dari Luka">
+      <div class="scene-emoji">🛡️</div>
+      <p class="arabic-line" dir="rtl" lang="ar">ٱلْحِفْظُ صَلَاة</p>
+      <h2 class="scene-title">Perisai Noura</h2>
+      <p class="scene-sub">Tahan perisai selama 3 detik menahan hujan nada 🛡️</p>
+
+      <div class="toy" id="shield-toy">
+        <div class="rain-zone" id="rain-zone" aria-hidden="true"></div>
+        <button class="shield-btn" id="shield-btn" type="button">
+          <svg viewBox="0 0 100 110" aria-hidden="true">
+            <path d="M50 6 L90 22 v34 c0 26 -18 42 -40 48 C28 98 10 82 10 56 V22 Z" fill="#0d3b2e" stroke="#f0c75e" stroke-width="4"/>
+            <path d="M50 24 v58 M28 46 h44" stroke="#f0c75e" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div class="hold-ring" id="shield-progress" aria-hidden="true"></div>
+      </div>
+
+      <div class="whisper"><p>“Menjadi lelaki yang melindungi bukan berarti tak takut — tapi memilih tetap berdiri, meski tangannya gemetar.”</p></div>
+      <p class="status" id="st-7">Tahan 0.0/3.0s</p>
+      <button class="btn-main hidden" id="btn-7-next" type="button">Lanjut →</button>
+    </section>
+
+    <!-- ============ BABAK 8 : LAMARAN AISHA ============ -->
+    <section class="scene" id="scene-8" aria-label="Babak 8 Lamaran Aisha Cincin Emas">
+      <div class="scene-emoji">💍</div>
+      <p class="arabic-line" dir="rtl" lang="ar">ٱلْمِيثَاقُ بَيْنَنَا</p>
+      <h2 class="scene-title">Cincin Emas</h2>
+      <p class="scene-sub">Satukan dua bagian cincin hingga bersinar penuh 💍</p>
+
+      <div class="toy" id="ring-toy">
+        <div class="ring-stage">
+          <svg viewBox="0 0 240 130" class="ring-svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="ringG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ffe9a8"/><stop offset="1" stop-color="#c9911f"/>
+              </linearGradient>
+              <radialGradient id="ringGlowG">
+                <stop offset="0%" stop-color="#ffe9a8" stop-opacity=".95"/>
+                <stop offset="55%" stop-color="#f0c75e" stop-opacity=".45"/>
+                <stop offset="100%" stop-color="#f0c75e" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle id="ring-glow" cx="120" cy="65" r="48" fill="url(#ringGlowG)" opacity="0"/>
+            <g id="ring-right">
+              <path d="M120 23 A42 42 0 0 1 120 107" fill="none" stroke="url(#ringG)" stroke-width="13" stroke-linecap="round"/>
+            </g>
+            <g id="ring-left">
+              <path d="M120 23 A42 42 0 0 0 120 107" fill="none" stroke="url(#ringG)" stroke-width="13" stroke-linecap="round"/>
+              <polygon id="ring-diamond" points="120,9 131,24 120,39 109,24" fill="#bfe9ff" stroke="#fff" stroke-width="2" opacity=".55"/>
+              <circle cx="120" cy="107" r="8" fill="#e0526a" stroke="#fff" stroke-width="2"/>
+            </g>
+          </svg>
+          <img src="assets/gif-cinta-hati.gif" alt="Hati Arab beranimasi" class="sticker-gif hidden" id="gif-s8" />
+        </div>
+        <input type="range" min="0" max="100" value="0" id="ring-range" class="range-gold" aria-label="Satukan cincin" />
+      </div>
+
+      <div class="whisper"><p>“Jika cintaku harus dipilihkan warna, aku pilih emas — karena ia tak pernah pudar, insya Allah.”</p></div>
+      <p class="status" id="st-8">Cincin 0%</p>
+      <button class="btn-main hidden" id="btn-8-next" type="button">Lamar →</button>
+    </section>
+
+    <!-- ============ BABAK 9 : AKAD NIKAH ============ -->
+    <section class="scene" id="scene-9" aria-label="Babak 9 Akad Nikah">
+      <div class="scene-emoji">🕊️</div>
+      <p class="arabic-line" dir="rtl" lang="ar">ٱلْحَمْدُ لِلَّٰهِ</p>
+      <h2 class="scene-title">Akad Nikah</h2>
+      <p class="scene-sub">Tahan tombol “Qabiltu” 2 detik untuk menyempurnakan ijab qabul 🕊️</p>
+
+      <div class="toy" id="akad-toy">
+        <svg viewBox="0 0 240 120" class="akad-svg" aria-hidden="true">
+          <path d="M30 108 V60 a90 60 0 0 1 180 0 v48" fill="none" stroke="#d4af37" stroke-width="4"/>
+          <path d="M60 108 V72 a60 44 0 0 1 120 0 v36" fill="none" stroke="#14532d" stroke-width="5"/>
+          <path d="M120 18 l4 9 10 1 -7.5 7 2 10 -8.5 -5 -8.5 5 2 -10 -7.5 -7 10 -1 z" fill="#f0c75e"/>
+          <circle cx="120" cy="46" r="6" fill="#e0526a" id="akad-heart"/>
+        </svg>
+        <button class="hold-btn" id="akad-btn" type="button">Qabiltu<br /><span class="hold-hint">tahan 2 detik</span></button>
+        <div class="hold-bar"><div class="hold-fill" id="akad-fill"></div></div>
+        <img src="assets/gif-lentera-2.gif" alt="Lentera Ramadhan beranimasi" class="sticker-gif small hidden" id="gif-s9" />
+      </div>
+
+      <div class="whisper"><p>“Dan saat kau mengucapkan ‘qabiltu’, seluruh langit Kairo seolah tersenyum… ya Allah, semoga ini cinta yang Engkau ridhai.”</p></div>
+      <p class="status" id="st-9">Belum diikat</p>
+      <button class="btn-main hidden" id="btn-9-next" type="button">Lanjut →</button>
+    </section>
+
+    <!-- ============ BABAK 10 : FITNAH & PENJARA ============ -->
+    <section class="scene" id="scene-10" aria-label="Babak 10 Fitnah dan Ujian di Penjara">
+      <div class="scene-emoji">⛓️</div>
+      <p class="arabic-line" dir="rtl" lang="ar">ٱلصَّبْرُ مُنَاجَة</p>
+      <h2 class="scene-title">Ujian &amp; Fitnah</h2>
+      <p class="scene-sub">Ketuk 6 titik cahaya di balik bilah penjara untuk menemukan jalan 🌟</p>
+
+      <div class="toy prison-toy" id="prison-toy">
+        <div class="prison-cell">
+          <button class="light-dot" data-dot="1" style="left:14%;top:22%" aria-label="Cahaya 1"></button>
+          <button class="light-dot" data-dot="2" style="left:70%;top:14%" aria-label="Cahaya 2"></button>
+          <button class="light-dot" data-dot="3" style="left:40%;top:44%" aria-label="Cahaya 3"></button>
+          <button class="light-dot" data-dot="4" style="left:82%;top:56%" aria-label="Cahaya 4"></button>
+          <button class="light-dot" data-dot="5" style="left:22%;top:68%" aria-label="Cahaya 5"></button>
+          <button class="light-dot" data-dot="6" style="left:58%;top:76%" aria-label="Cahaya 6"></button>
+          <div class="prison-bars" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="whisper"><p>“Fitnah memenjarakan tubuh, tapi tak pernah bisa memenjarakan hati yang bersih. Aku tenang — sebab kebenaran punya waktu sendiri.”</p></div>
+      <p class="status" id="st-10">Cahaya 0/6</p>
+      <button class="btn-main hidden" id="btn-10-next" type="button">Lanjut →</button>
+    </section>
+
+    <!-- ============ BABAK 11 : DOA UNTUK MARIA ============ -->
+    <section class="scene" id="scene-11" aria-label="Babak 11 Doa untuk Maria yang Koma">
+      <div class="scene-emoji">🤲</div>
+      <p class="arabic-line" dir="rtl" lang="ar">ٱلدُّعَاءُ رَحْمَة</p>
+      <h2 class="scene-title">Doa untuk Maria</h2>
+      <p class="scene-sub">Tahan tombol doa 4 detik — biar cahaya naik untuknya 🤲</p>
+
+      <div class="toy" id="doa-toy">
+        <div class="doa-rays" id="doa-rays" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <button class="doa-btn" id="doa-btn" type="button">
+          <span class="doa-ar" dir="rtl" lang="ar">ٱللَّهُمَّ ٱشْفِهَا</span>
+          <span class="hold-hint">tahan 4 detik</span>
+        </button>
+        <div class="hold-bar wide"><div class="hold-fill" id="doa-fill"></div></div>
+        <img src="assets/gif-doa.gif" alt="Doa Islami beranimasi" class="sticker-gif small hidden" id="gif-s11" />
+      </div>
+
+      <div class="whisper"><p>“Aku tak punya keajaiban untuk membangunkanmu… hanya doa yang tak pernah berhenti, setiap sujud, untuk kesembuhanmu.”</p></div>
+      <p class="status" id="st-11">Doa 0.0/4.0s</p>
+      <button class="btn-main hidden" id="btn-11-next" type="button">Lanjut →</button>
+    </section>
+
+    <!-- ============ BABAK 12 : CAHAYA SYAHADAT MARIA ============ -->
+    <section class="scene" id="scene-12" aria-label="Babak 12 Cahaya Syahadat Maria">
+      <div class="scene-emoji">✨</div>
+      <p class="arabic-line" dir="rtl" lang="ar">لَآ إِلَٰهَ إِلَّا ٱللَّٰهُ</p>
+      <h2 class="scene-title">Cahaya Syahadat</h2>
+      <p class="scene-sub">Nyalakan 4 lentera hingga ruangan bercahaya penuh ✨</p>
+
+      <div class="toy lanterns-toy" id="lanterns-toy">
+        <div class="lantern-row">
+          <button class="lantern" data-l="1" aria-label="Lentera 1">
+            <svg viewBox="0 0 60 96" aria-hidden="true"><line x1="30" y1="2" x2="30" y2="14" stroke="#d4af37" stroke-width="3"/><rect x="18" y="14" width="24" height="8" rx="3" fill="#d4af37"/><path d="M14 26 h32 l-5 44 h-22 z" fill="#12233f" stroke="#f0c75e" stroke-width="2.5"/><ellipse class="flame" cx="30" cy="48" rx="8" ry="13" fill="#f0c75e" opacity=".25"/><rect x="22" y="76" width="16" height="7" rx="3" fill="#d4af37"/></svg>
+          </button>
+          <button class="lantern" data-l="2" aria-label="Lentera 2">
+            <svg viewBox="0 0 60 96" aria-hidden="true"><line x1="30" y1="2" x2="30" y2="14" stroke="#d4af37" stroke-width="3"/><rect x="18" y="14" width="24" height="8" rx="3" fill="#d4af37"/><path d="M14 26 h32 l-5 44 h-22 z" fill="#12233f" stroke="#f0c75e" stroke-width="2.5"/><ellipse class="flame" cx="30" cy="48" rx="8" ry="13" fill="#f0c75e" opacity=".25"/><rect x="22" y="76" width="16" height="7" rx="3" fill="#d4af37"/></svg>
+          </button>
+          <button class="lantern" data-l="3" aria-label="Lentera 3">
+            <svg viewBox="0 0 60 96" aria-hidden="true"><line x1="30" y1="2" x2="30" y2="14" stroke="#d4af37" stroke-width="3"/><rect x="18" y="14" width="24" height="8" rx="3" fill="#d4af37"/><path d="M14 26 h32 l-5 44 h-22 z" fill="#12233f" stroke="#f0c75e" stroke-width="2.5"/><ellipse class="flame" cx="30" cy="48" rx="8" ry="13" fill="#f0c75e" opacity=".25"/><rect x="22" y="76" width="16" height="7" rx="3" fill="#d4af37"/></svg>
+          </button>
+          <button class="lantern" data-l="4" aria-label="Lentera 4">
+            <svg viewBox="0 0 60 96" aria-hidden="true"><line x1="30" y1="2" x2="30" y2="14" stroke="#d4af37" stroke-width="3"/><rect x="18" y="14" width="24" height="8" rx="3" fill="#d4af37"/><path d="M14 26 h32 l-5 44 h-22 z" fill="#12233f" stroke="#f0c75e" stroke-width="2.5"/><ellipse class="flame" cx="30" cy="48" rx="8" ry="13" fill="#f0c75e" opacity=".25"/><rect x="22" y="76" width="16" height="7" rx="3" fill="#d4af37"/></svg>
+          </button>
+        </div>
+        <div class="room-glow" id="room-glow" aria-hidden="true"></div>
+      </div>
+
+      <div class="whisper"><p>“Cahaya paling indah bukan dari lentera emas… melainkan cahaya iman yang menyala di hati — lailahaillallah.”</p></div>
+      <p class="status" id="st-12">Lentera 0/4</p>
+      <button class="btn-main hidden" id="btn-12-next" type="button">Lanjut →</button>
+    </section>
+
+    <!-- ============ BABAK 13 : SURAT ROMANTIS UNTUKMU ============ -->
+    <section class="scene" id="scene-13" aria-label="Babak 13 Surat Romantis untukmu">
+      <div class="scene-emoji">🌙</div>
+      <p class="arabic-line" dir="rtl" lang="ar">إِلَىٰ حَبِيبَتِي</p>
+      <h2 class="scene-title">Surat untukmu</h2>
+      <p class="scene-sub">Sebuah surat terbuka perlahan… baca sampai habis 💌</p>
+
+      <div class="toy" id="surat-toy">
+        <div class="envelope-card" id="envelope-card">
+          <div class="envelope-flap" id="envelope-flap"></div>
+          <div class="envelope-body">
+            <div class="letter-note hidden" id="letter-note-13">
+              <p class="note-ar" dir="rtl" lang="ar">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+              <p class="note-salam" dir="rtl" lang="ar">ٱلسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ ٱللَّٰهِ وَبَرَكَاتُهُ</p>
+            </div>
+            <p class="envelope-label" id="envelope-label">Ketuk untuk membuka surat 💌</p>
+            <p class="typed-text" id="typed-text"></p>
+            <span class="caret off" id="caret">▌</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="whisper"><p>“Aku bukan Fahri yang sempurna. Aku hanya manusia biasa yang jatuh cinta pada cara kamu berdoa — dan pada diam kamu yang penuh makna, habibi.”</p></div>
+      <p class="status" id="st-13">Ketuk surat untuk membuka 💌</p>
+      <button class="btn-main hidden" id="btn-13-next" type="button">Selesai →</button>
+    </section>
+
+    <!-- ============ BABAK 14 : FINALE ============ -->
+    <section class="scene finale-scene" id="scene-14" aria-label="Babak 14 Finale Ayat Cinta Abadi">
+      <div class="scene-emoji">🎆</div>
+      <p class="arabic-line" dir="rtl" lang="ar">ٱلْحَبُّ فِي ٱللَّٰهِ</p>
+      <h2 class="scene-title">Ayat Cinta Abadi</h2>
+      <p class="scene-sub">Kisahnya selesai dibaca… tapi doanya tak pernah berakhir 🤲</p>
+
+      <div class="toy finale-toy">
+        <div class="finale-sky">
+          <span class="finale-glow" aria-hidden="true"></span>
+          <svg viewBox="0 0 240 160" class="moon-svg" aria-hidden="true">
+            <defs>
+              <radialGradient id="moonG" cx="0.4" cy="0.4" r="0.7">
+                <stop offset="0" stop-color="#fff8ea"/><stop offset="1" stop-color="#e6c46a"/>
+              </radialGradient>
+              <radialGradient id="haloG">
+                <stop offset="0%" stop-color="#ffe9a8" stop-opacity=".5"/>
+                <stop offset="60%" stop-color="#f0c75e" stop-opacity=".16"/>
+                <stop offset="100%" stop-color="#f0c75e" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="120" cy="74" r="70" fill="url(#haloG)"/>
+            <circle cx="120" cy="74" r="46" fill="url(#moonG)"/>
+            <circle cx="142" cy="64" r="40" fill="#0a1128"/>
+            <path class="tw" style="--d:.2s" d="M186 40 l4 9 10 1 -7.5 7 2 10 -8.5 -5 -8.5 5 2 -10 -7.5 -7 10 -1 z" fill="#f0c75e"/>
+            <path class="tw" style="--d:.9s" d="M52 96 l3 7 8 .8 -6 5.5 1.7 8 -6.7 -4 -6.7 4 1.7 -8 -6 -5.5 8 -.8 z" fill="#f0c75e"/>
+            <path class="tw" style="--d:1.5s" d="M196 106 l3 6 7 .7 -5.2 4.7 1.5 7 -6.3 -3.5 -6.3 3.5 1.5 -7 -5.2 -4.7 7 -.7 z" fill="#ffd7de"/>
+            <path class="tw" style="--d:.6s" d="M36 44 l2.4 5.4 6 .7 -4.5 4 1.3 6 -5.2 -3 -5.2 3 1.3 -6 -4.5 -4 6 -.7 z" fill="#fff8ea"/>
+            <path class="tw" style="--d:1.9s" d="M154 132 l2 4.6 5.2 .6 -3.8 3.5 1.1 5.2 -4.5 -2.6 -4.5 2.6 1.1 -5.2 -3.8 -3.5 5.2 -.6 z" fill="#ffd7de"/>
+          </svg>
+        </div>
+
+        <div class="finale-card glass-card">
+          <p class="arabic-line big" dir="rtl" lang="ar">حَبِيبِي… رُوحِي… قَلْبِي</p>
+          <p class="finale-quote">“Cinta yang tumbuh di atas iman tak akan pernah mati — ia hanya berpindah rumah, dari hati menuju surga.”</p>
+          <div class="finale-rule" aria-hidden="true"><span>💛</span></div>
+          <p class="finale-sign">— habibi &amp; roohi, selamanya</p>
+          <p class="finale-doa" dir="rtl" lang="ar">اللَّهُمَّ اجْعَلْ حُبَّنَا فِي مِيزَانِ حَسَنَاتِنَا</p>
+          <p class="finale-attr">— terinspirasi kisah <em>Ayat-ayat Cinta</em>, Habiburrahman El Shirazy</p>
+        </div>
+
+        <div class="finale-actions">
+          <button class="btn-main" id="btn-restart" type="button">↻ Putar Ulang</button>
+        </div>
+        <p class="finale-thanks">Terima kasih sudah menemani sampai akhir 🌙</p>
+        <img src="assets/gif-masjid.gif" alt="Masjid di malam hari" class="sticker-gif hidden" id="gif-s14" />
+      </div>
+    </section>
+
+  </main>
+
+  <canvas id="finale-canvas" aria-hidden="true"></canvas>
+  <audio id="bg-audio" loop preload="none"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
